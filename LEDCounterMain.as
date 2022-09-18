@@ -111,6 +111,7 @@ Delay_Loop:
     goto    Delay_Loop
     retlw 0
 ;
+;
 ; The PIC10F200 reset vector is the highest 
 ; instruction word in the code space.
 ;
