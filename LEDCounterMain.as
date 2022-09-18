@@ -38,11 +38,11 @@
 ;
     PSECT   MainData,global,class=RAM,space=1,delta=1,noexec
     global  Delay_v1, Delay_v2, Counter, LED_Mask
-Temp:       DS      1
+Temp:	    DS      1
 Delay_v1:   DS      1
 Delay_v2:   DS      1
 Counter:    DS      1
-LED_Mask:    DS	    1
+LED_Mask:   DS	    1
 ;
 ; See: 
 ; https://electronics.stackexchange.com/questions/550331/
@@ -77,45 +77,35 @@ Loop:
     ;; BCF     GPIO,LED_Mask
     MOVWF   GPIO
     call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
     
     ;; BSF     GPIO,LED_Mask ;turn LED off again
     MOVLW   1000B
     MOVWF   GPIO
     call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
-    call    Delay
+
  
     INCF    Counter,1 
     goto    Loop        ;loop forever
     
 Delay:
-    movlw   100         ;put the decimal number 100 into w
+    ; movlw   100         ;put the decimal number 100 into w
+    ; Let's change this. Instead of 100d, let's put in 0xFF 
+    movlw   0xFF
     movwf   Delay_v1    ;put 100 in register 0Ah
     ;register 11h should be general purpose register that I can use
     ;to put in values
-    movwf   Delay_v2
-    ;put 100 in 12h
+    movwf   Delay_v2	;put 100 in 12h
 Delay_Loop:
+    ; Thiz is kind of the inner loop. It starts out by being loaded with 100d.
+    ; it iterates down to 0. Once it hits zero, it goes to the outer loop below. 
     DECFSZ  Delay_v1,F
     ;decrement the register and store the result in itself
     ;and skip the next instruction if the result was zero
     goto    Delay_Loop
     
+    ; Consider this the outter loop. It decrements by one, then goes to 
+    ; delay loop. The trick is that Delay_1 is at zero. Once the inner is called,
+    ; the inner loop decrements from 0x00 to 0xFF
     DECFSZ  Delay_v2,F
     ;the same with the second register that I filled
     goto    Delay_Loop

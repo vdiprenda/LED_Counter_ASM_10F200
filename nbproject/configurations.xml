@@ -32,7 +32,7 @@
         <targetDevice>PIC10F200</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>pk4hybrid</platformTool>
+        <platformTool>Simulator</platformTool>
         <languageToolchain>pic-as</languageToolchain>
         <languageToolchainVersion>2.36</languageToolchainVersion>
         <platform>4</platform>
